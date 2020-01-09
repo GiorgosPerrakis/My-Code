@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+    version="2.5">
+
+	<display-name>Testing Tomcat</display-name>
+	<description>Testing Tomcat</description>
+
+	<!-- Set Session timeout to 30 minutes -->
+	<session-config>
+		<session-timeout>20</session-timeout>
+	</session-config>
+
+  	<servlet>
+		<servlet-name>register</servlet-name>
+		<servlet-class>RegisterController</servlet-class>		
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>register</servlet-name>
+		<url-pattern>/register</url-pattern>
+	</servlet-mapping>
+	
+  	<servlet>
+		<servlet-name>register_provider</servlet-name>
+		<servlet-class>RegisterController_provider</servlet-class>		
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>register_provider</servlet-name>
+		<url-pattern>/register_provider</url-pattern>
+	</servlet-mapping>	
+	
+  	<servlet>
+		<servlet-name>create_event</servlet-name>
+		<servlet-class>CreateEventController</servlet-class>		
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>create_event</servlet-name>
+		<url-pattern>/create_event</url-pattern>
+	</servlet-mapping>	
+	
+  	<servlet>
+		<servlet-name>filters</servlet-name>
+		<servlet-class>FiltersController</servlet-class>		
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>filters</servlet-name>
+		<url-pattern>/filters</url-pattern>
+	</servlet-mapping>
+
+  	<servlet>
+		<servlet-name>search</servlet-name>
+		<servlet-class>SearchController</servlet-class>		
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>search</servlet-name>
+		<url-pattern>/search</url-pattern>
+	</servlet-mapping>	
+
+
+
+  
+
+   
+
+
+  
+
+  
+
+
+
+
+  
+
+  
+</web-app>

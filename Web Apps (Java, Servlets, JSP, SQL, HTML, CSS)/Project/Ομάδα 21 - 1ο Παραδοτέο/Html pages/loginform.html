@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<div class="back">
+ <head>
+  <meta charset="utf-8">
+  <title>Login</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/sketchy/bootstrap.min.css" rel="stylesheet" integrity="sha384-7ELRJF5/u1pkLd0W7K793Y7ZCb1ISE8FjEKiDAwHD3nSDbA2E9Txc423ovuNf1CV" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="loginform.css">
+
+
+ <nav class="navbar navbar-expand-lg justify-content-between">
+    <a class="navbar-brand" href="index.html">
+      <img src="images/logo.png" width="120" height="100" class="d-inline-block align-top">
+    </a>
+    <div>
+      <a href="loginform.html" class="btn btn-warning my-2 my-sm-0" type="submit" href="loginform.html">Σύνδεση</a>
+      &nbsp;
+      <a href="signupform.html" class="btn btn-danger my-2 my-sm-0" type="submit">Εγγραφή</a>
+    </div>
+  </nav>
+ </head>
+
+<body>
+    <div class="center">
+      <br>
+      <div class="card text-white bg-info mb-3">
+        <div class="center_some">
+            <div class="card-header">
+              <h3>Σύνδεση</h3>
+            </div>
+        </div>
+        <div class="card-body">
+          <img src="images/avatar.png" alt="Avatar" class="avatar">
+          <br>
+          <form>
+            <div class="form-group">
+              <label for="username">Όνομα Χρήστη</label>
+              <input type="text" class="form-control" id="username" placeholder="Εισαγωγή Διεύθυνσης Ηλ. Ταχυδρομείου example@example.com" type="email" required
+                 pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?">
+            </div>
+            <div class="form-group">
+              <label for="password">Κωδικός Πρόσβασης</label>
+              <input type="text" class="form-control" id="password" placeholder="Εισαγωγή Κωδικού Πρόσβασης" type="password" required>
+            </div>
+            <div class="center_some">
+              <button type="submit" class="btn btn-primary">Σύνδεση</button>
+              <br>
+              <br>
+              <p>Δεν έχετε ακόμα λογαριασμό;
+                <a href="signupform.html"> Εγγραφή</a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  &nbsp;
+</body>
+
+<div class="container-fluid">
+   <div class="row footer-info">
+       <img src="images/logo.png" width="110" height="85" alt="">
+   </div>
+   <div class="row footer-copyrigth">
+     @2018 Proudly developed by: Kindos
+   </div>
+</div>
+</div>
+</html>

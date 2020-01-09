@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+<div class="title">
+ <head>
+  <meta charset="utf-8">
+  <title>Create Event</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/sketchy/bootstrap.min.css" rel="stylesheet" integrity="sha384-7ELRJF5/u1pkLd0W7K793Y7ZCb1ISE8FjEKiDAwHD3nSDbA2E9Txc423ovuNf1CV" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="createevent.css">
+
+
+ <nav class="navbar navbar-expand-lg justify-content-between">
+    <a class="navbar-brand" href="index.html">
+      <img src="images/logo.png" width="120" height="100" class="d-inline-block align-top">
+    </a>
+    <div>
+      <a href="loginform.html" class="btn btn-warning my-2 my-sm-0" type="submit" href="loginform.html">Σύνδεση</a>
+      &nbsp;
+      <a href="signupform.html" class="btn btn-danger my-2 my-sm-0" type="submit">Εγγραφή</a>
+    </div>
+  </nav>
+</head>
+
+<body>
+  <div class="container">
+    &nbsp;
+    <h1>Δημιουργία Δραστηριότητας</h1>
+    <form>
+      <fieldset>
+       <legend style="color:#fff">Στοιχεία Δραστηριότητας</legend>
+       <small class="form-text text-muted">(* Υποχρεωτικά Πεδία)</small>
+        <div class="row">
+          <div class="col-lg-8">
+            <label>Όνομα Δραστηριότητας*</label>
+            <input type="text" class="form-control" placeholder="Εισαγωγή Ονόματος">
+            <small class="form-text text-muted">Το όνομα προβολής της δραστηριότητας στη λίστα.</small>
+          </div>
+        </div>
+        &nbsp;
+        <div class="row">
+         <div class="col-lg-4">
+              <label for="exampleSelect1">Επιλογή Κατηγορίας 1*</label>
+              <select class="form-control" id="exampleSelect1">
+                <option>Επιλέξτε Κατηγορία</option>
+                <option>Αθλητισμός</option>
+                <option>Θέατρο</option>
+                <option>Διασκέδαση</option>
+                <option>Εκπαίδευση</option>
+                <option>Χειροτεχνικά</option>
+                <option>Παιδότοπος</option>
+                <option>Μουσική</option>
+                <option>Καλλιτεχνικά</option>
+              </select>
+              <small class="form-text text-muted">Η επιλογή τουλάχιστον μίας κατηγορίας είναι υποχρεωτική.</small>
+              &nbsp;
+          </div>
+          <div class="col-lg-4">
+              <label for="exampleSelect1">Επιλογή Κατηγορίας 2</label>
+              <select class="form-control" id="exampleSelect1">
+                <option>Επιλέξτε Κατηγορία</option>
+                <option>Αθλητισμός</option>
+                <option>Θέατρο</option>
+                <option>Διασκέδαση</option>
+                <option>Εκπαίδευση</option>
+                <option>Χειροτεχνικά</option>
+                <option>Παιδότοπος</option>
+                <option>Μουσική</option>
+                <option>Καλλιτεχνικά</option>
+              </select>
+         </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-8">
+            <label>Τοποθεσία/Διεύθυνση Διεξαγωγής Δραστηριότητας*</label>
+            <input type="text" class="form-control" placeholder="Εισαγωγή Τοποθεσίας">
+            <small class="form-text text-muted">Τοποθεσία/Διεύθυνση όπου θα λάβει μέρος η παρών δραστηριότητα.</small>
+          </div>
+        </div>
+        &nbsp;
+        <div class="row">
+          <div class="col-lg-8">
+            <label for="exampleInputEmail1">Επιλογή Κατηγορίας Ηλικίας*</label>
+            <select class="form-control" id="exampleSelect1">
+              <option>Επιλέξτε Κατηγορία</option>
+              <option>1-3 ετών</option>
+              <option>3-5 ετών</option>
+              <option>5-12 ετών</option>
+              <option>12-18 ετών</option>
+            </select>
+            <small class="form-text text-muted">Ομάδες ηλικιών που θα μπορούν να συμμετάσχουν στη δραστηριότητα.</small>
+          </div>
+        </div>
+        &nbsp;
+        <div class="row">
+          <div class="col-lg-8">
+            <label for="exampleInputEmail1">Επιλογή Φύλο Παιδιών*</label>
+            <select class="form-control" id="exampleSelect1">
+              <option>Επιλέξτε Φύλο</option>
+              <option>Αγόρια</option>
+              <option>Κορίτσια</option>
+              <option>Και τα δύο φύλα</option>
+            </select>
+            <small class="form-text text-muted">Για ποιο φύλο παιδιών προορίζεται η δραστηριότητα.</small>
+          </div>
+        </div>
+        &nbsp;
+        <div class="row">
+          <div class="col-lg-8">
+            <label>Ορισμός Τιμής Εισιτηρίου*</label>
+            <input type="number" class="form-control" placeholder="Τιμή Εισιτηρίου">
+            <small class="form-text text-muted">Χρήματα που πρέπει να ξοδέψει ένας γονέας για αγορά εισιτηρίου.</small>
+          </div>
+        </div>
+        &nbsp;
+        <div class="row">
+          <div class="col-lg-8">
+            <label>Ορισμός Αριθμού Διαθέσιμων Εισιτηρίων*</label>
+            <input type="number" class="form-control" placeholder="Αριθμός Εισιτηρίου">
+            <small class="form-text text-muted">Αριθμός εισιτηρίων που διατίθονται για τη δραστηριότητα.</small>
+          </div>
+        </div>
+        &nbsp;
+        <div class="row">
+          <div class="col-lg-8">
+            <label>Περιγραφή Δραστηριότητας</label>
+            <textarea class="form-control" rows="4"></textarea>
+          </div>
+        </div>
+        &nbsp;
+        <div class="row">
+          <div class="col-lg-8">
+            <label for="exampleInputFile">Εικόνα/Φωτογραφία Δραστηριότητας*</label>
+            <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp" ng2FileSelect [uploader]="uploader">
+            <small class="form-text text-muted">Μέγιστο μέγεθος αρχείου: -- ΜΒ</small>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+    &nbsp;
+    <div class="row">
+      <div class="col-sm-10 col-sm-offset-2">
+      <button type="button" class="btn btn-success">Δημιουργία</button>
+      &nbsp;
+      <button type="button" class="btn btn-danger">Ακύρωση</button>
+    </div>
+  </div>
+  &nbsp;
+</body>
+</div>
+
+<div class="container-fluid">
+   <div class="row footer-info">
+       <img src="images/logo.png" width="110" height="85" alt="">
+   </div>
+   <div class="row footer-copyrigth">
+     @2018 Proudly developed by: Kindos
+   </div>
+</div>
+</html>

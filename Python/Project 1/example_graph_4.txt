@@ -1,0 +1,11 @@
+s a 26
+s c 8
+s e 8
+a b 2
+b t 2
+c d 6
+d t 2
+c f 4
+e f 6
+f g 6
+g t 5

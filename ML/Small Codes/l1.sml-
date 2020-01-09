@@ -1,0 +1,125 @@
+fun f x =
+	let
+		val y = x +1
+	in x+y
+end
+
+
+fun f' x = 
+	let 
+		fun g y = y+1 
+	in
+		g x
+end
+
+
+fun f'' x = (fn y => y+1 ) x	(* anwnimes sinartiseis(fn)*)
+
+val m=2
+val r = 
+	let
+		val m = 3
+		val n = m*m		(* edwm=3 *)
+	in
+		m*n
+	end * m 		(*tha pollaplasiasei me to 2*)
+
+
+val x =1
+fun ff y =x + y
+val x = 2   (* den thelw na epireastei i panw sinartisi*)
+val y =3
+val z = ff x * y
+val z' = ff (x *y)
+
+
+val x2 = 1
+fun fff y2 = 
+	let
+		val x2 = y2 +1
+	in
+		fn z => x2 + y2 + z   (*ekfrasi tipou sinartisis*)
+	end
+
+
+fun fact n =
+	if n = 0  then 1
+	else n*fact (n-1)
+
+fun fact' n = 
+	case n of 0 => 1   (* an to n = 0 epestrepse 1*)
+		| _ => n* fact'(n - 1)   (* | _ einai to else *)
+
+
+fun fact'' 0=1
+	| fact'' n = n * fact'' (n-1)
+
+
+
+fun fact2 n =		(* anapodi diadikasia: san whle 1*2*.. *n *)
+	let
+		fun aux 0 acc = acc
+			| aux n acc = aux(n-1)(n *acc)
+	in
+		aux n 1
+	end
+
+
+fun len [] = 0
+	| len (x::xs)= 1 + len xs  (*kefali x kai oura xs*)
+
+fun len' l = 
+	let 
+		fun aux [] acc = acc
+			| aux (xx::xs) acc = aux xs (acc +1)  
+	in
+		aux l 0
+	end
+
+
+fun rev1 l =		(* poli argo =n^2 , simferei to panw*)
+	case l of [] => []
+		| x::xs => (rev1 xs)@[x]
+
+
+(* fun rev_append l1 l2 =(rev l1) @ l2 *)
+(* rev_append[3,2,1][4,5,6] = [1,2,3,4,5,6] *)
+
+fun rev_append (x ::xs ) l2 = rev_append xs (x::l2) (*ousiastika antistrefw tin l1 *)
+
+fun double x = 2 * x
+fun quad x = double(double x)	
+
+
+(*kati pio abstract*)
+fun applyTwice f x = f(f x )  (* mia geniki sinartisi p kalei 2 fores kapoia *)
+val p = applyTwice(fn x => x*x) (*anwnimi sinartisi: den mporeis na tin kaleseismoni tis, mono mesw tis applyTwice*)
+
+
+fun applyTwice' f = f o f   (* telestis(o) i mia function (f) pairnei san orisma tis alli function *)
+
+(*
+fun sum l = 
+	case l of [] => 0
+		| x::xs 
+
+*)
+
+(* [1,2,3] = powerset [] => [[]] *)
+
+
+fun map f[] = []		(* efarmozei mia opoiadipote sinartisi se ola ta stoixeia tis listas *)
+	| map f(x::xs) = (f x ) :: map f xs
+
+
+(* [1,2,3] = ??? :: [[],[2],[3],[2,3]] *)
+fun powerset_naive [] = [[]]
+	| powerset_naive (h::t) = 
+		let
+			fun cons h t = h::t (*vazei stin kefali tis listas to t*)
+		in
+			(map (cons h) (powerset_naive t))  @(powerset_naive t)	(*sinenwsi 2 listwn*)
+
+		end
+
+

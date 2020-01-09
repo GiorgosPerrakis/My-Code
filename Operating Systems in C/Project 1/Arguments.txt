@@ -1,0 +1,33 @@
+
+
+
+
+
+
+
+
+int main(int argc, char *argv[])
+{
+	int left_carry,right_carry;
+	char ch;
+	FILE *fp;
+	FILE *fp1;
+	if(argc>1) fp = fopen(argv[1],"r");
+	else{
+		printf("wrong number of parameters\n");
+		exit(21);
+	}
+	if(argc>2) fp1 = fopen(argv[2],"w");
+	else fp1 = stdout;	
+	if(fp == NULL){
+		fprintf(fp1,"cannot open 1st text file\n");
+		fclose(fp);
+		fclose(fp1);
+		exit(21);
+	}
+	if(fp1 == NULL){
+		printf("cannot open 2nd text file\n");
+		fclose(fp);
+		fclose(fp1);
+		exit(21);
+	}	

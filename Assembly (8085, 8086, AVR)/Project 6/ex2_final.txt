@@ -1,0 +1,103 @@
+.include "m16def.inc"
+
+.def input = r16
+.def output = r17
+.def register = r18
+.def leds = r19
+.def delay = r20
+.def number = r21
+.def flag = r22
+
+
+
+main: 
+	ldi register, low(RAMEND)			;initialize stack pointer
+	out SPL, register
+	ldi register, high(RAMEND)
+	out SPH, register
+
+	ser register 
+	out DDRA, register					;initialize PORTA for output               
+	clr register
+	out  DDRB, register					;initialize PORTB for input 
+	ldi number, 100						;set 100 seconds delay
+	clr flag				
+
+flash:	
+	in input, PINB
+	cp input,flag
+	breq label1
+	mov output, input					
+	andi input,0x0F						;use mask to keep 4 LSBs
+
+	cp input,flag
+	breq label1
+
+	andi output,0xF0					;use mask to keep 4MSBs
+	lsr output							;rotate 4 times to take the right number
+	lsr output
+	lsr output
+	lsr output
+
+	cp output,flag
+	breq label2
+
+	rcall on							;open leds
+	mov delay,input
+	rcall delay_routine					;calculate delay and wait
+						
+	rcall off						;turn off leds
+	mov delay,output
+	rcall delay_routine					;calculate delay and wait
+	rjmp flash
+
+label1:
+	rcall off
+	rjmp flash
+
+label2:
+	rcall on
+	rjmp flash
+
+
+delay_routine:							;calculate delay 
+	mul delay,number
+	mov r24,r0
+	mov r25,r1
+	rcall wait_msec
+	ret
+
+
+wait_usec:
+	sbiw r24 ,1							;2 cycles (0.250 탎ec)
+	nop									;1 cycle (0.125 탎ec)
+	nop									;1 cycle (0.125 탎ec)
+	nop									;1 cycle (0.125 탎ec)
+	nop									;1 cycle (0.125 탎ec)
+	brne wait_usec						;1 ? 2 cycles (0.125 ? 0.250 탎ec
+	ret									;4 cycles (0.500 탎ec)
+
+
+wait_msec:
+	push r24							;2 cycles (0.250 탎ec)
+	push r25							;2 cycles
+	ldi r24,low(998)					;1 cycle (0.125 탎ec)
+	ldi r25,high(998)					;1 cycle (0.125 탎ec)
+	rcall wait_usec						;3 cycles (0.375 탎ec)
+										
+	pop r25								;2 cycles (0.250 탎ec)
+	pop r24								;2 cycles
+	sbiw r24 , 1						;2 cycles
+	brne wait_msec						;1 ? 2 cycles (0.125 ? 0.250 탎ec)
+	ret									;4 cycles (0.500 탎ec)
+
+
+on:
+	ser leds							;turn on leds
+	out PORTA,leds
+	ret
+
+off:									;turn off leds
+	clr leds
+	out PORTA,leds
+	ret

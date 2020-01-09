@@ -1,0 +1,61 @@
+IN 10H
+START:
+	MVI E,00H       ;number of interupts = 0
+	LXI B,0064H     ;delay for DELB routine
+	MVI A,0DH       ;enable RST 6.5
+	SIM
+	EI
+L1:
+	MVI A,00H       ;counter
+     ADD E           ;we merge counter with number
+LOOP1:               ;of interupts while MSB on
+	CMA             ;reverse logic leds
+	STA 3000H  
+	CMA
+     MOV D,A
+     MVI A,0DH       ;enable RST 6.5
+     SIM
+	DI       
+	CALL DELB       ;disable interupts during
+	EI              ;DELB routine
+	MOV A,D
+	INR A           
+	MOV D,A
+     ANI 10H
+     CPI 10H
+	JZ L1           ;if counter = 10H then we start
+     MOV A,D         ;from 0 again else we continue
+	JMP LOOP1       ;counting up
+ 	
+INTR_ROUTINE:        ;interupt routine, when we press
+	MOV H,A         ;INTRT button
+	MOV A,E         ;we allow all interupts BUT we 
+	RAR             ;count them only when MSB of the
+	RAR             ;switches is ON
+	RAR
+	RAR
+	MOV L,A         ;number of interupts so far
+	LDA 2000H
+	RLC
+	JNC END1        ;if MSB = 0 we dont count the
+	MOV A,L         ;interupt else we count
+	INR A
+	JMP END2
+END1: 
+	MOV A,L
+END2:
+	CPI 0FH        ;if number of interupts reaches
+	JZ L2          ;bound we set it with zero value
+	JMP L3
+L2:
+	MVI A,00H
+L3:
+	RAL            ;we move the number of interupts 
+	RAL            ;to the 4 MSB of A register
+	RAL
+	RAL
+	MOV E,A
+	MOV A,H
+     ORA E          ;then we merge with register E
+	RET
+END

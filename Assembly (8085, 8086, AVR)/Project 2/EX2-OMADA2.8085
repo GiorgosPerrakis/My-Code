@@ -1,0 +1,44 @@
+	MVI A,10H        ;code 10H is blank
+	STA 0B00H	       ;and is stored to the 7
+	STA 0B01H        ;segment displays
+	STA 0B02H        ;as a starting condition
+	STA 0B03H
+	STA 0B04H
+	STA 0B05H
+	LXI D,0B00H      ;register D has the starting
+	CALL STDM        ;address for routine STDM
+	CALL DCD
+	CALL KIND        ;while routine KIND is waiting
+				   ;for a value, routine DCD
+                      ;is executed by default
+                      ;Code of the button to 
+		            ;register A
+				   ;KIND routine recognises
+                      ;only buttons 0-F
+LOOP1:	
+	MOV H,A
+	ANI 0FH
+	MOV C,A           ;right digit of the code
+	MOV A,H           ;to register C
+	ANI F0H           ;and left to register B
+	RRC
+	RRC
+	RRC
+	RRC
+       MOV B,A
+	MOV A,C           ;the code is stored to 
+	STA 0B00H         ;the 2 right digits
+	MOV A,B           ;while the other 4 
+	STA 0B01H         ;are left as blank
+	MVI A,10H
+	STA 0B02H
+	STA 0B03H
+	STA 0B04H
+	STA 0B05H
+	LXI D,0B00H
+	CALL STDM
+	CALL DCD
+	CALL KIND
+	JMP LOOP1        ;continuous operation
+
+END

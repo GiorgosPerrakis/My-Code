@@ -1,0 +1,79 @@
+#include <avr/io.h>
+#include <stdio.h>
+
+unsigned char shift_left(unsigned char x);
+unsigned char shift_right(unsigned char y);
+
+int main(void)
+{
+	unsigned char z0,z1,z2,z3,z4,a;
+	int sw0 = 0,sw1 = 0,sw2 = 0,sw3 = 0,sw4 = 0;                
+	DDRB = 0xFF;               /* PORTB as output */
+	DDRD = 0x00;               /* PORTD as input */
+	PORTB = 0x01;               /* we start with right LED on */ 
+    while (1) 
+    {
+		z0 = PIND & 0x01;      /* we take each of the 5 LSBs of PIND by applying masks */
+		z1 = PIND & 0x02;
+		z2 = PIND & 0x04;
+		z3 = PIND & 0x08;
+		z4 = PIND & 0x10;
+		if(sw0 == 1 && z0 == 0x00)
+		{
+			PORTB = shift_left(PINB);
+		}
+		else if(sw1 == 1 && z1 == 0x00)
+		{
+			PORTB = shift_right(PINB);
+		}
+		else if(sw2 == 1 && z2 == 0x00)
+		{
+			a = shift_left(PINB);
+			PORTB = shift_left(a);
+		}
+		else if(sw3 == 1 && z3 == 0x00)
+		{
+			a = shift_right(PINB);
+			PORTB = shift_right(a);
+		}
+		else if(sw4 == 1 && z4 == 0x00)
+		{
+			PORTB = 0x01;
+		}	
+					
+		if(z0 == 0x01)	
+			sw0 = 1;
+		else 	
+			sw0 = 0;
+		if(z1 == 0x02)	
+			sw1 = 1;
+		else 	
+			sw1 = 0;
+		if(z2 == 0x04)	
+			sw2 = 1;
+		else 
+			sw2 = 0;
+		if(z3 == 0x08)	
+			sw3 = 1;
+		else 
+			sw3 = 0;
+		if(z4 == 0x10)
+			sw4 = 1;
+		else
+			sw4 = 0;
+    }
+	return 0;
+}
+
+unsigned char shift_left(unsigned char x){
+	if(x == 0x80) return 0x01;
+	else return (x << 1);	
+}
+
+unsigned char shift_right(unsigned char y){
+	if(y == 0x01) return 0x80;
+	else return (y >> 1);	
+}
+
+
+

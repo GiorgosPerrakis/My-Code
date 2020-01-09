@@ -1,0 +1,78 @@
+IN 10H 
+START:
+   MVI A,10H
+   STA 0903H
+   STA 0904H
+   STA 0905H
+   LDA 2000H              ;DIAVASMA
+   MOV B,A
+   RLC
+   JNC POSITIVE           ; ELEGXOS PROSHMOY
+   JC NEGATIVE 
+
+POSITIVE:
+   MVI A,10H        ;GINETAI KENO
+   STA 0902H        ;TO 3o PSIFIO
+   LXI D,0902H
+   MOV A,B
+   CPI 64H               ;ELEGXOS GIA ORIO
+   JP HIGH
+   JMP CONVERT
+   
+
+NEGATIVE:
+   MOV A,B
+   CMA                   ;ARNHTIKOS ARITHMOS 
+   ADI 01H               ;PAIRNOUME SIMPLIROMA OS PROS 2 
+   MOV B,A 
+   MVI A,1CH
+   STA 0902H             ;TO 3o PSIFIO 
+   LXI D,0900H           ;TWN 7-SEGMENT 
+   CALL STDM             ;GINETAI (-) 
+   CALL DCD            
+   MOV A,B
+   CPI 64H 
+   JP LOW  
+   JMP CONVERT 
+   
+
+CONVERT:
+MVI C,00H               ;METATROPH HEX->DEC
+TENS:                   
+   SUI 0AH
+   JC UNITS 
+   INR C                ;DEKADES=DEKADES+1
+   JMP TENS             ;C = DEKADES
+UNITS:
+   ADI 0AH              ;A = MONADES
+   STA 0900H            ;A -> STO 1o PSIFIO
+   MOV A,C              
+   STA 0901H            ;C -> STO 2o PSIFIO
+   LXI D,0900H
+   CALL STDM            ;EMFANISI STO 7-SEGMENT
+   CALL DCD 
+JMP START  
+    
+
+HIGH:
+   MVI A,19H        ;GINETAI ( I )
+   STA 0900H        ;TO 1o PSIFIO
+   MVI A,11H        ;GINETAI ( H ) 
+   STA 0901H        ;TO 2o PSIFIO 
+   LXI D,0900H
+   CALL STDM 
+   CALL DCD 
+   JMP START
+
+LOW: 
+   MVI A,00H       ;GINETAI ( O )
+   STA 0900H       ;TO 1o PSIFIO
+   MVI A,12H       ;GINETAI ( L )
+   STA 0901H       ;TO 2o PSIFIO 
+   LXI D,0900H
+   CALL STDM 
+   CALL DCD
+   JMP START 
+
+
+END

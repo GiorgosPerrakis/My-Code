@@ -1,0 +1,80 @@
+	MVI E,00H      ;counter for interrupts
+	LXI B,01FAH    ;BC=500 => delay is 0,5 sec   
+	MVI D,01H      ;flag that tells if we have to 
+	MVI A,0DH      ;move right or left
+	SIM            ;enable interrupts
+	EI
+	MVI H,FEH      ;register for leds
+MOVE_LEFT:
+	MVI D,01H      ;if D is 1 means that we move left 
+       LDA 2000H      ;while LSB of the switches is 
+       RAR            ;off we dont count
+	JNC MOVE_LEFT 
+	MOV A,H
+	STA 3000H      ;store the leds
+	MVI A,0DH
+	SIM            ;desable interrupt before we use DELB
+	DI
+	CALL DELB
+	EI             ;enable interrupt after
+	MOV A,H
+	RLC            ;move to the next bit
+	MOV H,A
+	CPI 7FH        ;check if we arrived to the last bit
+	JNZ MOVE_LEFT  ;if we didn't we continue
+	STA 3000H      ;store the last bit
+L1: 
+	MVI A,0DH
+	SIM            ;enable interrupts
+	EI	
+	JMP L1         ;stop the led and wait for an interrupt
+
+MOVE_RIGHT:
+	MVI D,02H      ;if D is 1 means that we move left
+       LDA 2000H      ;while LSB of the switches is 
+       RAR            ;off we dont count
+	JNC MOVE_RIGHT
+	MOV A,H
+	STA 3000H       ;store the leds
+	MVI A,0DH
+	SIM 
+	DI              ;desible interrupt before we use DELB
+	CALL DELB
+	EI              ;enable interrupt after
+	MOV A,H
+	RRC             ;move to the next bit
+	MOV H,A
+	CPI FEH         ;check if we arrived to the last bit
+	JNZ MOVE_RIGHT  ;if we didn't we continue
+	STA 3000H       ;store the last bit
+L2:  
+	MVI A,0DH
+	SIM             ;enable interrupts
+	EI
+	JMP L2          ;stop the led and wait for an interrupt
+
+INTR_ROUTINE:
+       LDA 2000H       ;while LSB of the switches is 
+       RAR             ;off we dont count
+	JNC L1
+	INR E           ;E gets values from 1-3
+	MOV A,E
+	CPI 03H         ;check if E is 3
+	JNZ M2          ;if it isn't we continue
+	MVI E,01H       ;otherwise we set E as 1
+M2:  
+	MOV A,E
+	CPI 01H	       ;check if E is 1
+	JZ L1           ;if it is that means that we are in the first interrupt and we have to stop our led
+	MOV A,D         ;otherwise we have to move our led
+	CPI 01H         ;the flag D will show us which way to follow
+	JZ MOVE_RIGHT 
+	JMP MOVE_LEFT
+
+END
+
+
+
+
+
+	

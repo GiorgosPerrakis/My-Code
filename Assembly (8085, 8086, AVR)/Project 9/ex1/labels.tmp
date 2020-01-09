@@ -1,0 +1,37 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.42</VERSION>
+ <DEVICE>ATmega16</DEVICE>
+ <WORKING_DIR>E:\ex1</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files\Atmel\AVR Tools\AvrAssembler2\Appnotes</DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>E:\ex1\ex1.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:\Program Files\Atmel\AVR Tools\AvrAssembler2\Appnotes\m16def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>E:\ex1\ex1.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>E:\ex1\ex1.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>E:\ex1\ex1.map</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <_tmp_><FILE>E:\ex1\ex1.asm</FILE><LINE>4</LINE></_tmp_>
+  <start><FILE>E:\ex1\ex1.asm</FILE><LINE>8</LINE></start>
+  <lcd_init><FILE>E:\ex1\ex1.asm</FILE><LINE>216</LINE></lcd_init>
+  <lcd_data><FILE>E:\ex1\ex1.asm</FILE><LINE>200</LINE></lcd_data>
+  <loop><FILE>E:\ex1\ex1.asm</FILE><LINE>30</LINE></loop>
+  <scan_keypad_rising_edge><FILE>E:\ex1\ex1.asm</FILE><LINE>104</LINE></scan_keypad_rising_edge>
+  <keypad_to_ascii><FILE>E:\ex1\ex1.asm</FILE><LINE>129</LINE></keypad_to_ascii>
+  <lcd_command><FILE>E:\ex1\ex1.asm</FILE><LINE>208</LINE></lcd_command>
+  <wait_usec><FILE>E:\ex1\ex1.asm</FILE><LINE>52</LINE></wait_usec>
+  <wait_msec><FILE>E:\ex1\ex1.asm</FILE><LINE>61</LINE></wait_msec>
+  <scan_row><FILE>E:\ex1\ex1.asm</FILE><LINE>73</LINE></scan_row>
+  <back_><FILE>E:\ex1\ex1.asm</FILE><LINE>75</LINE></back_>
+  <scan_keypad><FILE>E:\ex1\ex1.asm</FILE><LINE>86</LINE></scan_keypad>
+  <write_2_nibbles><FILE>E:\ex1\ex1.asm</FILE><LINE>182</LINE></write_2_nibbles>
+ </LABELS>
+</ASSEMBLER_INFO>

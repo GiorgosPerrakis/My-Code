@@ -1,0 +1,39 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.42</VERSION>
+ <DEVICE>ATmega16</DEVICE>
+ <WORKING_DIR>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files\Atmel\AVR Tools\AvrAssembler2\Appnotes</DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:\Program Files\Atmel\AVR Tools\AvrAssembler2\Appnotes\m16def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.map</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <start><FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</FILE><LINE>11</LINE></start>
+  <start1><FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</FILE><LINE>24</LINE></start1>
+  <lcd_init><FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</FILE><LINE>176</LINE></lcd_init>
+  <lcd_data><FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</FILE><LINE>141</LINE></lcd_data>
+  <positive><FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</FILE><LINE>73</LINE></positive>
+  <continue><FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</FILE><LINE>77</LINE></continue>
+  <to_dec><FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</FILE><LINE>86</LINE></to_dec>
+  <to_mon><FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</FILE><LINE>92</LINE></to_mon>
+  <no_ekat><FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</FILE><LINE>103</LINE></no_ekat>
+  <check><FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</FILE><LINE>111</LINE></check>
+  <label><FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</FILE><LINE>106</LINE></label>
+  <no_dec><FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</FILE><LINE>114</LINE></no_dec>
+  <wait_usec><FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</FILE><LINE>120</LINE></wait_usec>
+  <wait_msec><FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</FILE><LINE>129</LINE></wait_msec>
+  <write_2_nibbles><FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</FILE><LINE>157</LINE></write_2_nibbles>
+  <lcd_command><FILE>C:\Documents and Settings\mlab.STUDENTVM\Desktop\ex3\ex3.asm</FILE><LINE>149</LINE></lcd_command>
+ </LABELS>
+</ASSEMBLER_INFO>

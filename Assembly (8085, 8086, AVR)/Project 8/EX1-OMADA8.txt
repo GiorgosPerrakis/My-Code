@@ -1,0 +1,83 @@
+.include "m16def.inc"
+
+.def temp = r16
+.def led1 = r17
+.def led2 = r18
+.def g1 = r19
+.def g2 = r20
+.def g3 = r21
+.def g4 = r22
+.def g5 = r23
+
+start:
+	ldi temp,0x0f
+	out DDRC, temp									;PORTC for output
+	clr temp
+	out DDRB, temp									;PORTB for input
+	out DDRA, temp									;PORTA for input
+
+	out PORTC, temp									;close all leds
+
+gate1:
+	in led1, PINB									;led1 = input
+	mov led2, led1
+	andi led1, 01									;mask to keep bit0
+	andi led2, 02									;mask to keep bit1
+	lsr led2										;right shift
+	or led2, led1
+	mov g1, led2
+	
+gate2:
+	in led1, PINB									;led1 = input
+	mov led2, led1
+	andi led1, 04									;mask to keep bit2
+	andi led2, 0x08									;mask to keep bit3
+	lsr led2										
+	and led2, led1
+	lsr led2										;right shift to move result to bit1 place
+	mov g2, led2 
+		
+gate3:
+	in led1, PINB									;led1 = input
+	mov led2, led1
+	andi led1, 16									;mask to keep bit4
+	andi led2, 32									;mask to keep bit5
+	lsr led2	
+	eor led2, led1									
+	lsr led2
+	lsr led2										;right shift to move result to bit2 place
+	mov g3, led2
+
+gate4:
+	in led1, PINB									;led1 = input
+	mov led2, led1
+	andi led1, 64									;mask to keep bit6
+	andi led2, 128									;mask to keep bit7
+	lsr led2	
+	eor led2, led1									
+	lsr led2
+	lsr led2	
+	lsr led2										;right shift to move result to bit3 place
+	mov g4, led2
+
+gate5:
+	mov led1, g3
+	lsl led1										;left shift to move the result of gate3 to bit3 place
+	eor led2, led1
+	mov g5, led2
+
+result:
+	clr temp
+	or temp, g1
+	or temp, g2
+	or temp, g3
+	or temp, g4
+
+check:
+	mov led1, temp									;read PC buttons 0-7 and check if any PC buttons is pressed
+	in temp, PINA
+	ldi temp,0x0f								
+	eor led1, temp
+	out PORTC, led1
+	rjmp start
+

@@ -1,0 +1,39 @@
+LXI B,03E8H        ;delay time for DELB routine
+START:
+     LDA 2000H     ;while MSB of the switches is 
+     RAL           ;off we dont count
+	JNC START
+	RAR
+	ANI 0FH       ;count limit found in 4 LSB of the
+	MOV D,A       ;switches stored in register D
+LOOP1:             ;count up
+	CMA           ;reverse logic leds
+	STA 3000H
+	CALL DELB
+	CMA
+	MOV E,A
+L1:
+	LDA 2000H     ;while MSB of the switches is
+	RAL           ;off we dont count
+	JNC L1
+	MOV A,E
+	CPI 00H       ;if counter = 0 we count up
+	JZ LOOP2
+	DCR A         ;else we count down
+	JMP LOOP1
+LOOP2:             ;count down
+	CMP D         ;if counter = limit we repeat
+	JZ START
+	MOV E,A
+L2:
+	LDA 2000H     ;while MSB of the switches is
+	RAL           ;off we dont count
+	JNC L2
+	MOV A,E
+	INR A
+	CMA           ;reverse logic leds 
+	STA 3000H
+	CALL DELB
+	CMA
+	JMP LOOP2
+END

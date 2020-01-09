@@ -1,0 +1,38 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.42</VERSION>
+ <DEVICE>ATmega16</DEVICE>
+ <WORKING_DIR>E:\ex4</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files\Atmel\AVR Tools\AvrAssembler2\Appnotes</DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>E:\ex4\ex4.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:\Program Files\Atmel\AVR Tools\AvrAssembler2\Appnotes\m16def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>E:\ex4\ex4.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>E:\ex4\ex4.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>E:\ex4\ex4.map</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <start><FILE>E:\ex4\ex4.asm</FILE><LINE>10</LINE></start>
+  <lcd_init><FILE>E:\ex4\ex4.asm</FILE><LINE>245</LINE></lcd_init>
+  <lcd_data><FILE>E:\ex4\ex4.asm</FILE><LINE>229</LINE></lcd_data>
+  <loop><FILE>E:\ex4\ex4.asm</FILE><LINE>52</LINE></loop>
+  <beginning><FILE>E:\ex4\ex4.asm</FILE><LINE>57</LINE></beginning>
+  <lcd_command><FILE>E:\ex4\ex4.asm</FILE><LINE>237</LINE></lcd_command>
+  <wait_msec><FILE>E:\ex4\ex4.asm</FILE><LINE>199</LINE></wait_msec>
+  <loop1><FILE>E:\ex4\ex4.asm</FILE><LINE>94</LINE></loop1>
+  <restart><FILE>E:\ex4\ex4.asm</FILE><LINE>182</LINE></restart>
+  <label0><FILE>E:\ex4\ex4.asm</FILE><LINE>157</LINE></label0>
+  <label1><FILE>E:\ex4\ex4.asm</FILE><LINE>164</LINE></label1>
+  <label2><FILE>E:\ex4\ex4.asm</FILE><LINE>170</LINE></label2>
+  <label3><FILE>E:\ex4\ex4.asm</FILE><LINE>179</LINE></label3>
+  <wait_usec><FILE>E:\ex4\ex4.asm</FILE><LINE>190</LINE></wait_usec>
+  <write_2_nibbles><FILE>E:\ex4\ex4.asm</FILE><LINE>211</LINE></write_2_nibbles>
+ </LABELS>
+</ASSEMBLER_INFO>

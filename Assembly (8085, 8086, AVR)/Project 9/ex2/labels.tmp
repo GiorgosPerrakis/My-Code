@@ -1,0 +1,48 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.42</VERSION>
+ <DEVICE>ATmega16</DEVICE>
+ <WORKING_DIR>E:\ex2</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files\Atmel\AVR Tools\AvrAssembler2\Appnotes</DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>E:\ex2\ex2.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:\Program Files\Atmel\AVR Tools\AvrAssembler2\Appnotes\m16def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>E:\ex2\ex2.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>E:\ex2\ex2.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>E:\ex2\ex2.map</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <_tmp_><FILE>E:\ex2\ex2.asm</FILE><LINE>4</LINE></_tmp_>
+  <start><FILE>E:\ex2\ex2.asm</FILE><LINE>18</LINE></start>
+  <ISR_TIMER1_OVF><FILE>E:\ex2\ex2.asm</FILE><LINE>142</LINE></ISR_TIMER1_OVF>
+  <lcd_init><FILE>E:\ex2\ex2.asm</FILE><LINE>330</LINE></lcd_init>
+  <sensor_loop><FILE>E:\ex2\ex2.asm</FILE><LINE>38</LINE></sensor_loop>
+  <lcd_command><FILE>E:\ex2\ex2.asm</FILE><LINE>321</LINE></lcd_command>
+  <password_loop><FILE>E:\ex2\ex2.asm</FILE><LINE>56</LINE></password_loop>
+  <scan_keypad_rising_edge><FILE>E:\ex2\ex2.asm</FILE><LINE>215</LINE></scan_keypad_rising_edge>
+  <keypad_to_ascii><FILE>E:\ex2\ex2.asm</FILE><LINE>240</LINE></keypad_to_ascii>
+  <password_incorrect><FILE>E:\ex2\ex2.asm</FILE><LINE>117</LINE></password_incorrect>
+  <lcd_data><FILE>E:\ex2\ex2.asm</FILE><LINE>312</LINE></lcd_data>
+  <first_digit_correct><FILE>E:\ex2\ex2.asm</FILE><LINE>67</LINE></first_digit_correct>
+  <second_digit_correct><FILE>E:\ex2\ex2.asm</FILE><LINE>78</LINE></second_digit_correct>
+  <password_correct><FILE>E:\ex2\ex2.asm</FILE><LINE>91</LINE></password_correct>
+  <password_correct1><FILE>E:\ex2\ex2.asm</FILE><LINE>114</LINE></password_correct1>
+  <inner_loop><FILE>E:\ex2\ex2.asm</FILE><LINE>120</LINE></inner_loop>
+  <label0><FILE>E:\ex2\ex2.asm</FILE><LINE>132</LINE></label0>
+  <wait_msec><FILE>E:\ex2\ex2.asm</FILE><LINE>381</LINE></wait_msec>
+  <end_loop><FILE>E:\ex2\ex2.asm</FILE><LINE>180</LINE></end_loop>
+  <leds_loop><FILE>E:\ex2\ex2.asm</FILE><LINE>168</LINE></leds_loop>
+  <scan_row><FILE>E:\ex2\ex2.asm</FILE><LINE>184</LINE></scan_row>
+  <back_><FILE>E:\ex2\ex2.asm</FILE><LINE>186</LINE></back_>
+  <scan_keypad><FILE>E:\ex2\ex2.asm</FILE><LINE>197</LINE></scan_keypad>
+  <write_2_nibbles><FILE>E:\ex2\ex2.asm</FILE><LINE>293</LINE></write_2_nibbles>
+  <wait_usec><FILE>E:\ex2\ex2.asm</FILE><LINE>371</LINE></wait_usec>
+ </LABELS>
+</ASSEMBLER_INFO>

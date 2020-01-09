@@ -1,0 +1,283 @@
+.include "m16def.inc"
+
+.def temp = r18
+.def minutes = r19
+.def seconds = r20
+.def minutes1 = r21
+.def seconds1 = r22
+.def ascii = r23
+
+start:
+	ldi r24, low(RAMEND)																		
+	out SPL, r24
+	ldi r24, high(RAMEND)
+	out SPH, r24
+	
+	clr temp					; set PORTA as input
+	out DDRA, temp
+
+	ldi r24, (1 << PD7) | (1 << PD6) | (1 << PD5) | (1 << PD4) | (1 << PD3) | (1 << PD2)		; set 6 MSBs as output
+	out DDRD, r24																				; in PORTD
+
+	call lcd_init					; initialize lcd screen 
+	ldi r24,'0'																	
+	call lcd_data					; 00 MIN:00 SEC	
+	ldi r24,'0'
+	call lcd_data
+	ldi r24,' '	
+	call lcd_data
+	ldi r24,'M'
+	call lcd_data
+	ldi r24,'I'
+	call lcd_data					
+	ldi r24,'N'
+	call lcd_data
+	ldi r24,':'
+	call lcd_data
+	ldi r24,'0'	
+	call lcd_data
+	ldi r24,'0'
+	call lcd_data
+	ldi r24,' '	
+	call lcd_data	
+	ldi r24,'S'
+	call lcd_data
+	ldi r24,'E'
+	call lcd_data
+	ldi r24,'C'
+	call lcd_data
+
+	ldi ascii, 0x30
+
+loop:
+	in temp, PINA					
+	sbrs temp, 0x00					; check PA0			 
+	jmp loop						; if it's pressed then skip instruction and start the stopwatch
+
+beginning:							; set minutes = seconds = 0
+	clr minutes
+	ldi seconds, 1
+	clr minutes1
+	clr seconds1
+	ldi r24, 0x02					; clear screen
+	rcall lcd_command
+	ldi r24,'0'																	
+	call lcd_data					; 00 MIN:00 SEC	
+	ldi r24,'0'
+	call lcd_data
+	ldi r24,' '	
+	call lcd_data
+	ldi r24,'M'
+	call lcd_data
+	ldi r24,'I'
+	call lcd_data					
+	ldi r24,'N'
+	call lcd_data
+	ldi r24,':'
+	call lcd_data
+	ldi r24,'0'	
+	call lcd_data
+	ldi r24,'0'
+	call lcd_data
+	ldi r24,' '	
+	call lcd_data	
+	ldi r24,'S'
+	call lcd_data
+	ldi r24,'E'
+	call lcd_data
+	ldi r24,'C'
+	call lcd_data
+	ldi r24, low(1000)				; delay 1 second
+	ldi r25, high(1000)
+	rcall wait_msec	
+
+loop1:
+	in temp, PINA		
+	sbrc temp, 0x07					; check PA7
+	jmp restart						; if it's pressed then restart the stopwatch			
+	sbrs temp, 0x00					; check PA0			 
+	jmp loop1						; if it's pressed then skip instruction and start the stopwatch
+									
+	ldi r24, 0x02					; clear screen
+	rcall lcd_command
+
+	mov temp, minutes1
+	add minutes1, ascii
+	mov r24, minutes1
+	mov minutes1, temp
+	call lcd_data					; print first digit of minutes to the screen
+
+	mov temp, minutes
+	add minutes, ascii
+	mov r24, minutes
+	mov minutes, temp
+	call lcd_data					; print second digit of minutes to the screen
+					
+	ldi r24,' '	
+	call lcd_data
+	ldi r24,'M'
+	call lcd_data
+	ldi r24,'I'
+	call lcd_data					; print "MIN:" to the screen
+	ldi r24,'N'
+	call lcd_data
+	ldi r24,':'
+	call lcd_data
+
+	mov temp, seconds1				; print first digit of seconds to the screen
+	add seconds1, ascii
+	mov r24, seconds1
+	mov seconds1, temp					
+	call lcd_data
+
+	mov temp, seconds				; print second digit of seconds to the screen
+	add seconds, ascii
+	mov r24, seconds
+	mov seconds, temp					
+	call lcd_data					
+
+	ldi r24,' '	
+	call lcd_data	
+	ldi r24,'S'
+	call lcd_data					; print " SEC" to the screen
+	ldi r24,'E'
+	call lcd_data
+	ldi r24,'C'
+	call lcd_data
+
+	ldi r24, low(1000)				; delay 1 second
+	ldi r25, high(1000)
+	rcall wait_msec					
+
+	cpi seconds, 9					; if second digit is 9 increase first digit and clear seconds
+	brlo label0
+	inc seconds1					; else just increase seconds
+	ldi seconds, -1
+
+label0:
+	inc seconds
+	
+	cpi seconds1, 6					; check if 60 sec passed
+	breq label1	
+	jmp loop1
+
+label1:								; if 60 sec passed increase second digit of minutes
+	cpi minutes, 9
+	brlo label2						; if second digit is 9 increase first digit and clear minutes
+	inc minutes1
+	ldi minutes, -1
+
+label2:
+	inc minutes
+
+	clr seconds
+	clr seconds1
+	cpi minutes1, 6					; check if 60 minutes passed
+	breq label3						; if yes restart the stopwatch
+	jmp loop1
+
+label3:
+	jmp beginning
+
+restart:
+	in temp, PINA
+	sbrs temp, 0x07					; check if PA7 was pressed
+	jmp beginning					; if not restart the stopwatch
+	jmp restart						; if yes wait
+
+
+
+wait_usec:
+	sbiw r24 ,1					; 2 eyeeie (0.250 isec)
+	nop							; 1 eyeeio (0.125 isec)
+	nop							; 1 eyeeio (0.125 isec)
+	nop							; 1 eyeeio (0.125 isec)
+	nop							; 1 eyeeio (0.125 isec)
+	brne wait_usec				; 1 ? 2 eyeeie (0.125 ? 0.250 isec)
+	ret							; 4 eyeeie (0.500 isec)
+
+wait_msec:
+	push r24					; 2 eyeeie (0.250 isec)
+	push r25					; 2 eyeeie
+	ldi r24 , low(998)			; ounouoa oii eaoa?. r25:r24 ia 998 (1 eyeeio - 0.125 isec)
+	ldi r25 , high(998)			; 1 eyeeio (0.125 isec)
+	rcall wait_usec				; 3 eyeeie (0.375 isec), ?nieaea? ooiieeeU eaeoooYncoc 998.375 isec
+	pop r25						; 2 eyeeie (0.250 isec)
+	pop r24						; 2 eyeeie
+	sbiw r24 , 1				; 2 eyeeie
+	brne wait_msec				; 1 ? 2 eyeeie (0.125 ? 0.250 isec)
+	ret							; 4 eyeeie (0.500 isec)
+
+write_2_nibbles:
+	push r24					; ooYeiae oa 4 MSB
+	in r25 ,PIND				; aeaaU?iioae oa 4 LSB eae oa iaiaooYeiioia
+	andi r25 ,0x0f				; aea ia ici ?aeUoioia oci u?iea ?nicaiyiaic eaoUooaoc
+	andi r24 ,0xf0				; a?iiii?iiioae oa 4 MSB eae
+	add r24 ,r25				; ooiaoU?iioae ia oa ?niu?Un?iioa 4 LSB
+	out PORTD ,r24				; eae a?iiioae ooci Yiiai
+	sbi PORTD ,PD3				; acieionaa?oae ?aeiuo Enable ooii aeniaYeoc PD3
+	cbi PORTD ,PD3				; PD3=1 eae iaoU PD3=0
+	pop r24						; ooYeiae oa 4 LSB. AiaeoUoae oi byte.
+	swap r24					; aiaeeUooiioae oa 4 MSB ia oa 4 LSB
+	andi r24 ,0xf0				; ?io ia oci oaenU oioo a?iooYeeiioae
+	add r24 ,r25
+	out PORTD ,r24
+	sbi PORTD ,PD3				; IYio ?aeiuo Enable
+	cbi PORTD ,PD3
+	ret
+
+lcd_data:
+	sbi PORTD ,PD2				; a?eeia? oio eaoa?un?oc aaaiiYiui (PD2=1)
+	rcall write_2_nibbles		; a?iooie? oio byte
+	ldi r24 ,43					; aiaiii? 43isec iY?ne ia ieieecnuea? c e?oc
+	ldi r25 ,0					; oui aaaiiYiui a?u oii aeaaeo? oco lcd
+	rcall wait_usec
+	ret
+
+lcd_command:
+	cbi PORTD ,PD2				; a?eeia? oio eaoa?unco? aioie?i (PD2=1)
+	rcall write_2_nibbles		; a?iooie? oco aioie?o eae aiaiii? 39isec
+	ldi r24 ,39					; aea oci ieiee?nuoc oco aeoYeaoco oco a?u oii aeaaeo? oco lcd.
+	ldi r25 ,0					; OCI.: o?Un?ioi ayi aioieYo, ie clear display eae return home,
+	rcall wait_usec				; ?io a?aeoiyi ociaioeeU iaaaeyoani ?niieeu aeUoocia.
+	ret
+
+lcd_init:
+	ldi r24 ,40					; ?oai i aeaaeo?o oco lcd onioiaioa?oae ia
+	ldi r25 ,0					; nayia aeoaea? oci aee? oio an?eei?i?coc.
+	rcall wait_msec				; Aiaiii? 40 msec iY?ne aoo? ia ieieecnuea?.
+	ldi r24 ,0x30				; aioie? iaoUaaoco oa 8 bit mode
+	out PORTD ,r24				; a?aea? aai i?iniyia ia a?iaooa aYaaeie
+	sbi PORTD ,PD3				; aea oc aeaiunouoc aeouaio oio aeaaeo?
+	cbi PORTD ,PD3				; oco ieuico, c aioie? a?iooYeeaoae ayi oinYo
+	ldi r24 ,39
+	ldi r25 ,0					; aUi i aeaaeo?o oco ieuico an?oeaoae oa 8-bit mode
+	rcall wait_usec				; aai ea ooiaa? o??ioa, aeeU ai i aeaaeo?o Y?ae aeaiunouoc
+								; aeouaio 4 bit ea iaoaaa? oa aeaiunouoc 8 bit
+	ldi r24 ,0x30	
+	out PORTD ,r24
+	sbi PORTD ,PD3
+	cbi PORTD ,PD3
+	ldi r24 ,39
+	ldi r25 ,0
+	rcall wait_usec
+	ldi r24 ,0x20				; aeeaa? oa 4-bit mode
+	out PORTD ,r24
+	sbi PORTD ,PD3
+	cbi PORTD ,PD3
+	ldi r24 ,39
+	ldi r25 ,0
+	rcall wait_usec
+	ldi r24 ,0x28				; a?eeia? ?anaeo?nui iaaYeioo 5x8 eioe?aui
+	rcall lcd_command			; eae aioUieoc ayi anaii?i ooci ieuic
+	ldi r24 ,0x0c				; aianai?i?coc oco ieuico, a?uenooc oio eYnoina
+	rcall lcd_command
+	ldi r24 ,0x01				; eaeaneoiuo oco ieuico
+	rcall lcd_command
+	ldi r24 ,low(1530)
+	ldi r25 ,high(1530)
+	rcall wait_usec
+	ldi r24 ,0x06				; aianai?i?coc aoouiaoco ayicoco eaoU 1 oco aeayeoioco
+	rcall lcd_command			; ?io a?iae a?ieceaoiYic ooii iaonco? aeaoeyioaui eae
+								; a?aianai?i?coc oco ie?oecoco ieueecnco oco ieuico
+	ret

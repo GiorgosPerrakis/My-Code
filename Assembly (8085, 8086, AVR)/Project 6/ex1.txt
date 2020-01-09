@@ -1,0 +1,59 @@
+.include "m16def.inc" 
+ 
+.def temp=r20
+
+start:
+   ldi r24,0
+   out DDRB,r24            ; port B as input
+   ldi r24,LOW(RAMEND)     ; initialize stack
+   out SPL,r24
+   ldi r25,HIGH(RAMEND)
+   out SPH,r25
+   ser r24
+   out DDRA,r24            ; port A as output
+   ldi temp,1
+shift_left:
+   out PORTA,temp
+   ldi r24,LOW(5)
+   ldi r25,HIGH(5)
+   rcall wait_msec 
+   in r21,PINB
+   sbic PINB,0x00          ; if PINB(0)=1 led stops moving
+   jmp shift_left
+   rol temp 
+   cpi temp,128
+   breq shift_right 
+   jmp shift_left
+shift_right:
+   out PORTA,temp
+   ldi r24,LOW(5)
+   ldi r25,HIGH(5)
+   rcall wait_msec 
+   in r21,PINB
+   sbic PINB,0x00
+   jmp shift_right
+   ror temp 
+   cpi temp,1
+   breq shift_left
+   jmp shift_right   
+   
+wait_usec:
+   sbiw r24 ,1            ; 2 κύκλοι (0.250 μsec)
+   nop                    ; 1 κύκλος (0.125 μsec)
+   nop                    ; 1 κύκλος (0.125 μsec)
+   nop                    ; 1 κύκλος (0.125 μsec)
+   nop                    ; 1 κύκλος (0.125 μsec)
+   brne wait_usec         ; 1 ή 2 κύκλοι (0.125 ή 0.250 μsec)
+   ret                    ; 4 κύκλοι (0.500 μsec)
+
+wait_msec:
+   push r24               ; 2 κύκλοι (0.250 μsec)
+   push r25               ; 2 κύκλοι
+   ldi r24 , low(998)     ; φόρτωσε τον καταχ. r25:r24 με 998 (1 κύκλος - 0.125 μsec)
+   ldi r25 , high(998)    ; 1 κύκλος (0.125 μsec)
+   rcall wait_usec        ; 3 κύκλοι (0.375 μsec), προκαλεί συνολικά καθυστέρηση 998.375 μsec
+   pop r25                ; 2 κύκλοι (0.250 μsec)
+   pop r24                ; 2 κύκλοι
+   sbiw r24 , 1           ; 2 κύκλοι
+   brne wait_msec         ; 1 ή 2 κύκλοι (0.125 ή 0.250 μsec)
+   ret                    ; 4 κύκλοι (0.500 μsec)

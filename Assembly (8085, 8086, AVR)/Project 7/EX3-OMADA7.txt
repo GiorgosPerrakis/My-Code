@@ -1,0 +1,98 @@
+.include "m16def.inc"
+.def temp = r16 
+.def leds = r17
+
+.org 0x00
+jmp reset
+.org 0x02
+jmp ISR0
+.org 0x10
+jmp ISR_TIMER1_OVF
+
+reset:
+	ldi temp,high(RAMEND)                       ; initialize stack pointer
+	out SPH,temp
+	ldi temp,low(RAMEND)
+	out SPL,temp
+
+	ser temp
+	out DDRA,temp                               ; initialize port A for output
+	clr temp
+	out DDRB,temp                               ; initilize port B for input
+	clr leds
+	out PORTA,leds                              ; PORTA is off before the interrupts
+
+	ldi temp,( 1 << ISC01) | ( 1 << ISC00)      ; INT0 with positive pulse
+	out MCUCR,temp
+	ldi temp,( 1 << INT0)                       ; enable interrupt INT0
+	out GICR,temp
+	sei                                         ; enable all interrupts
+
+loop:
+	in temp,PINB                                ; read input
+	andi temp,1                                 ; use mask to take LSB of PORTB ( PINB(0) )
+	sbrs temp,0                                 ; if PINB(0) == 1 we ignore next instruction
+	rjmp loop
+
+	ldi temp,(1<<TOIE1)                         ; enable overflow interrupt of register TCNT1
+	out TIMSK,temp                              ; for timer1
+	ldi temp,(1<<CS12) | (0<<CS11) | (1<<CS10)  ; CK/1024 = 8MHz/1024 = 7812.5Hz
+    out TCCR1B,temp                                 ; 7812.5 * 3sec = 23437.5 cycles
+	ldi temp,0xA4                               ; MAX - 23437.5 = 42098.5 cycles = 0xA472
+	out TCNT1H,temp                             ; we set TCNT1 to overflow after 3 seconds
+	ldi temp,0x72
+	out TCNT1L,temp
+	ser leds
+	out PORTA,leds                              ; we turn on the leds for 0.5 sec
+	ldi r24,low(500)											;wait for 0.5 seconds
+	ldi r25,high(500)
+	rcall wait_msec	                            ; we turn on the leds for 0.5 sec
+	ldi temp,0x80
+	out PORTA,temp                              ; after 0.5 sec we keep only PA7 on
+	jmp loop
+
+ISR0:
+	ldi temp,(1<<TOIE1)                         ; enable overflow interrupt of register TCNT1
+	out TIMSK,temp                              ; for timer1
+	ldi temp,(1<<CS12) | (0<<CS11) | (1<<CS10)  ; CK/1024 = 8MHz/1024 = 7812.5Hz
+    out TCCR1B,temp                             ; 7812.5 * 3sec = 23437.5 cycles
+	ldi temp,0xA4                               ; MAX - 23437.5 = 42098.5 cycles = 0xA472
+	out TCNT1H,temp                             ; we set TCNT1 to overflow after 3 seconds
+	ldi temp,0x72
+	out TCNT1L,temp
+	ser leds
+	out PORTA,leds  
+	ldi r24,low(500)											;wait for 0.5 seconds
+	ldi r25,high(500)
+	rcall wait_msec	                            ; we turn on the leds for 0.5 sec
+	ldi temp,0x80
+	out PORTA,temp                              ; after 0.5 sec we keep only PA7 on
+	reti
+
+
+ISR_TIMER1_OVF:
+	clr leds
+	out PORTA,leds								; we turn off the leds
+	reti
+
+
+wait_usec:
+   sbiw r24 ,1            ; 2 ?????? (0.250 탎ec)
+   nop                    ; 1 ?????? (0.125 탎ec)
+   nop                    ; 1 ?????? (0.125 탎ec)
+   nop                    ; 1 ?????? (0.125 탎ec)
+   nop                    ; 1 ?????? (0.125 탎ec)
+   brne wait_usec         ; 1 ? 2 ?????? (0.125 ? 0.250 탎ec)
+   ret                    ; 4 ?????? (0.500 탎ec)
+
+wait_msec:
+   push r24               ; 2 ?????? (0.250 탎ec)
+   push r25               ; 2 ??????
+   ldi r24 , low(998)     ; f??t?se t?? ?ata?. r25:r24 킻 998 (1 ?????? - 0.125 탎ec)
+   ldi r25 , high(998)    ; 1 ?????? (0.125 탎ec)
+   rcall wait_usec        ; 3 ?????? (0.375 탎ec), p???a?e? s??????? ?a??st???s? 998.375 탎ec
+   pop r25                ; 2 ?????? (0.250 탎ec)
+   pop r24                ; 2 ??????
+   sbiw r24 , 1           ; 2 ??????
+   brne wait_msec         ; 1 ? 2 ?????? (0.125 ? 0.250 탎ec)
+   ret                    ; 4 ?????? (0.500 탎ec)

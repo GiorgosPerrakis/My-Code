@@ -1,0 +1,87 @@
+.include "m16def.inc"
+
+.def register = r16
+.def counter = r17
+.def interrupts_counter = r18
+
+.org 0x00
+rjmp reset						
+.org 0x02
+rjmp ISR0						
+
+reset:
+	ldi register, high(RAMEND)
+	out SPH, register
+	ldi register, low(RAMEND)
+	out SPL, register
+	
+	ser register
+	out DDRA, register									;PORTA for output
+	out DDRB, register									;PORTB for output
+	clr register
+	out DDRD, register									;PORTD for input
+
+	clr interrupts_counter
+	clr counter
+	
+	ldi register, (1 << ISC01) | (1 << ISC00)			;initialize flag for INT0
+	out MCUCR, register 
+	ldi register, (1 << INT0)
+	out GICR, register
+	sei													;activate interrupts
+	
+loop:
+	out PORTA, counter									;show counter value
+	ldi r24, low(100)									;delay for 100 ms
+	ldi r25, high(100)
+	rcall wait_msec
+	inc counter
+	rjmp loop
+
+
+ISR0:													;routine for INT0
+	cli													;deactivate interrupts
+
+bouncing:												
+	ldi register, (1 << INTF0)
+	out GIFR, register									;clear bit 6 of GIFR
+
+	ldi r24, low(5)											;wait for 5 mseconds
+	ldi r25, high(5)
+	rcall wait_msec
+
+	in register, GIFR									;read bit 6 of GIFR
+	sbrc register, INTF0								;and check if bit6=0
+	rjmp bouncing
+
+	sbic PIND, 0x00										;check if PIND=0
+	inc interrupts_counter								;if not, increase counter of interrupts
+	out PORTB, interrupts_counter						
+	sei
+	reti												;exit
+
+
+wait_usec:
+   sbiw r24 ,1            ; 2 ?????? (0.250 탎ec)
+   nop                    ; 1 ?????? (0.125 탎ec)
+   nop                    ; 1 ?????? (0.125 탎ec)
+   nop                    ; 1 ?????? (0.125 탎ec)
+   nop                    ; 1 ?????? (0.125 탎ec)
+   brne wait_usec         ; 1 ? 2 ?????? (0.125 ? 0.250 탎ec)
+   ret                    ; 4 ?????? (0.500 탎ec)
+
+wait_msec:
+   push r24               ; 2 ?????? (0.250 탎ec)
+   push r25               ; 2 ??????
+   ldi r24 , low(998)     ; f??t?se t?? ?ata?. r25:r24 킻 998 (1 ?????? - 0.125 탎ec)
+   ldi r25 , high(998)    ; 1 ?????? (0.125 탎ec)
+   rcall wait_usec        ; 3 ?????? (0.375 탎ec), p???a?e? s??????? ?a??st???s? 998.375 탎ec
+   pop r25                ; 2 ?????? (0.250 탎ec)
+   pop r24                ; 2 ??????
+   sbiw r24 , 1           ; 2 ??????
+   brne wait_msec         ; 1 ? 2 ?????? (0.125 ? 0.250 탎ec)
+   ret                    ; 4 ?????? (0.500 탎ec)
+	
+	
+	 
+

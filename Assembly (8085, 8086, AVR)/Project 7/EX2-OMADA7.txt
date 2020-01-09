@@ -1,0 +1,87 @@
+.include "m16def.inc"
+
+.def temp=r26
+.def temp1=r23
+
+.org 0x00
+rjmp reset
+.org 0x04
+rjmp ISR1
+
+reset:
+	ldi temp, high(RAMEND)
+	out SPH, temp
+	ldi temp, low(RAMEND)
+	out SPL, temp
+
+  	ldi temp ,( 1 << ISC11) | ( 1 << ISC10)   ;energopoihsh sthn 8etikh akmh
+  	out MCUCR , temp
+	ldi temp ,( 1 << INT1)                    ;energopoihsh ths INT1
+	out GICR , temp
+	sei                                      ;energopoihsh twn diakopwn
+
+main:
+  ser temp        
+  out DDRA,temp    ;port A as output(counter)
+  out DDRC,temp    ;port C as output(the number of B dip switches that are ON) 
+  clr temp
+  out DDRB,temp    ;port B as input(the number of dip switches)
+
+loop:                     ;counter programm 
+  out PORTA,temp
+  ldi r24,low(100)
+  ldi r25,high(100)
+  rcall wait_msec
+  inc temp
+  rjmp loop
+
+ISR1:   
+  cli              ;interrupt routine
+  ;push temp
+  clr temp1               ;temp now will count the number of the dip switches that are ON
+	
+
+  sbic PINB,0x00
+  inc temp1
+  sbic PINB,0x01
+  inc temp1
+  sbic PINB,0x02
+  inc temp1
+  sbic PINB,0x03
+  inc temp1
+  sbic PINB,0x04
+  inc temp1
+  sbic PINB,0x05
+  inc temp1
+  sbic PINB,0x06
+  inc temp1
+  sbic PINB,0x07
+  inc temp1 
+  ;       /*now temp= # dip switches(ON) */
+
+  out PORTC,temp1
+  ;pop temp          ;and the temp(=r26)
+  sei
+  reti
+
+
+wait_usec:
+   sbiw r24 ,1            ; 2 ?????? (0.250 탎ec)
+   nop                    ; 1 ?????? (0.125 탎ec)
+   nop                    ; 1 ?????? (0.125 탎ec)
+   nop                    ; 1 ?????? (0.125 탎ec)
+   nop                    ; 1 ?????? (0.125 탎ec)
+   brne wait_usec         ; 1 ? 2 ?????? (0.125 ? 0.250 탎ec)
+   ret                    ; 4 ?????? (0.500 탎ec)
+
+wait_msec:
+   push r24               ; 2 ?????? (0.250 탎ec)
+   push r25               ; 2 ??????
+   ldi r24 , low(998)     ; f??t?se t?? ?ata?. r25:r24 킻 998 (1 ?????? - 0.125 탎ec)
+   ldi r25 , high(998)    ; 1 ?????? (0.125 탎ec)
+   rcall wait_usec        ; 3 ?????? (0.375 탎ec), p???a?e? s??????? ?a??st???s? 998.375 탎ec
+   pop r25                ; 2 ?????? (0.250 탎ec)
+   pop r24                ; 2 ??????
+   sbiw r24 , 1           ; 2 ??????
+   brne wait_msec         ; 1 ? 2 ?????? (0.125 ? 0.250 탎ec)
+   ret                    ; 4 ?????? (0.500 탎ec)

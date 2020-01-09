@@ -1,0 +1,55 @@
+IN 10H
+START:
+	LDA 2000H       ;content of the switches 
+	MOV E,A         ;to register A
+	ANI 0FH          
+	MOV D,A         ;x on register D 
+	MOV A,E
+	ANI F0H
+	RRC
+	RRC
+	RRC
+	RRC
+	MOV E,A         ;y on register E
+	INR E           ;E = y + 1
+	INR D           ;D = x + 1
+	LXI H,0000H 
+	MVI B,00H 
+	MOV C,D         ;BC = 00(register D)H 
+	MVI A,00H       ;register A the counter 
+LOOP1:               ;multiplécation loop
+	CPI 64H         ;repeat 100 times
+	JZ L1
+	DAD B           ;regisyer HL has the result 
+	INR A         
+	JMP LOOP1
+L1:
+	MOV B,H         ;BC = 100 * (1 + x)
+	MOV C,L         ;the delay time for DELB routine
+	MVI A,00H       
+FLASH:               ;flash routine:
+	CMP E           ;the leds flash (1 + y) times
+	JZ L2
+	INR A
+	CALL ON1
+	CALL OFF1
+	JMP FLASH
+
+ON1:                 ;routine for leds on
+	MOV D,A
+	MVI A,00H
+	STA 3000H       ;reverse logic for leds
+	MOV A,D
+	CALL DELB
+	RET
+
+OFF1:                ;routine for leds off
+	MOV D,A
+	MVI A,FFH
+	STA 3000H       ;reverse logic for leds
+	MOV A,D
+	CALL DELB
+	RET	
+
+L2:
+END 
